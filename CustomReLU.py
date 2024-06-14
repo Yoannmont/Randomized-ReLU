@@ -15,16 +15,18 @@ Initialisation parameters:
   
 """
 
+
 class CustomReLU():
   """"""
+
   def __init__(self, *args):
     if len(args) == 3:
-      #Can take direct parameters as args ...
+      # Can take direct parameters as args ...
       self.beta, self.gamma, self.clipping = args
     else:
       raise AssertionError('Invalid parameters')
 
-  #Computes CustomReLU(x) where x is float
+  # Computes CustomReLU(x) where x is float
   def value(self, x):
     value = x - self.gamma
     if value > 0 and self.beta*value > self.clipping:
@@ -34,25 +36,27 @@ class CustomReLU():
     else:
       return 0
 
-  #Computes CustomReLU(X) where X is an array
-  def array(self,X):
+  # Computes CustomReLU(X) where X is an array
+  def array(self, X):
     array = []
     for x in X:
       array.append(self.value(x))
     return array
-  
+
   def print_parameters(self):
-    print("beta = {:.3f}/ gamma = {:.3f} / clipping = {:.3f}".format(self.beta, self.gamma, self.clipping))
+    print("beta = {:.3f}/ gamma = {:.3f} / clipping = {:.3f}".format(self.beta,
+          self.gamma, self.clipping))
 
   def get_parameters(self):
-    return [self.beta,self.gamma, self.clipping]
-  
-  #Returns a new CustomReLU with a new parameter value
+    return [self.beta, self.gamma, self.clipping]
+
+  # Returns a new CustomReLU with a new parameter value
   def change_parameter(self, parameter, parameter_value):
-    
+
     if not parameter in ['beta', 'gamma', 'clipping']:
-      raise AssertionError("Invalid parameter. Parameter must be 'beta', 'gamma' or 'clipping'")
-    else : 
+      raise AssertionError(
+          "Invalid parameter. Parameter must be 'beta', 'gamma' or 'clipping'")
+    else:
       if parameter == 'beta':
         return CustomReLU(parameter_value, self.gamma, self.clipping)
       if parameter == 'gamma':
@@ -60,15 +64,17 @@ class CustomReLU():
       if parameter == 'clipping':
         return CustomReLU(self.beta, self.gamma, parameter_value)
 
-  #Shows the graph of the function
+  # Shows the graph of the function
   def show_graph(self):
-    X = np.linspace(-20,20,1000)
+    X = np.linspace(-20, 20, 1000)
     Y = self.array(X)
-    Y_relu = [max(value,0) for value in X]
-    plt.plot(X, Y, label = 'Custom ReLU')
-    plt.plot(X,Y_relu, label='ReLU')
-    plt.hlines(y=0,xmin=-20,xmax=20,colors='red', linestyles='dashed', lw=0.5)
-    plt.vlines(x=0,ymin = min(Y[0],Y_relu[0]),ymax = max(Y[-1],Y_relu[-1]),colors='red', linestyles='dashed', lw=0.5)
+    Y_relu = [max(value, 0) for value in X]
+    plt.plot(X, Y, label='Custom ReLU')
+    plt.plot(X, Y_relu, label='ReLU')
+    plt.hlines(y=0, xmin=-20, xmax=20, colors='red',
+               linestyles='dashed', lw=0.5)
+    plt.vlines(x=0, ymin=min(Y[0], Y_relu[0]), ymax=max(
+        Y[-1], Y_relu[-1]), colors='red', linestyles='dashed', lw=0.5)
     plt.xlabel('x')
     plt.ylabel('Custom ReLU(x)')
     plt.title("Comparison between CustomReLU and ReLU")
